@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:theme="@style/AppTheme.LoginScreenTheme"
+    tools:context=".register">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/reg_here"
+            android:layout_margin="35dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Name"
+                android:textColor="@color/White"
+                android:layout_marginLeft="35dp"
+                android:fontFamily="@font/calibri_bold"
+                android:textSize="20dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tb_background"
+                android:hint="Enter your Full Name"
+                android:textColorHint="@color/hint_backcolor"
+                android:fontFamily="@font/calibri_regular"
+                android:textSize="20dp"
+                android:layout_marginLeft="35dp"
+                android:paddingBottom="20dp"
+                android:layout_marginRight="35dp"
+                android:inputType="text"
+                android:textColor="@color/White" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Mobile No"
+            android:textColor="@color/White"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/calibri_bold"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tb_background"
+            android:hint="Enter your Mobile No"
+            android:textColorHint="@color/hint_backcolor"
+            android:fontFamily="@font/calibri_regular"
+            android:textSize="20dp"
+            android:layout_marginLeft="35dp"
+            android:paddingBottom="20dp"
+            android:layout_marginRight="35dp"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textColor="@color/White" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Password"
+            android:textColor="@color/White"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/calibri_bold"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tb_background"
+            android:hint="Enter your Password"
+            android:textColorHint="@color/hint_backcolor"
+            android:fontFamily="@font/calibri_regular"
+            android:textSize="20dp"
+            android:layout_marginLeft="35dp"
+            android:paddingBottom="20dp"
+            android:layout_marginRight="35dp"
+            android:inputType="textPassword"
+            android:textColor="@color/White" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="PAN NO"
+            android:textColor="@color/White"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/calibri_bold"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tb_background"
+            android:hint="Enter your PAN No"
+            android:textColorHint="@color/hint_backcolor"
+            android:fontFamily="@font/calibri_regular"
+            android:textSize="20dp"
+            android:layout_marginLeft="35dp"
+            android:paddingBottom="20dp"
+            android:layout_marginRight="35dp"
+            android:inputType="text"
+            android:textColor="@color/White" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Adhar NO"
+            android:textColor="@color/White"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/calibri_bold"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tb_background"
+            android:hint="Enter your Adhar No"
+            android:textColorHint="@color/hint_backcolor"
+            android:fontFamily="@font/calibri_regular"
+            android:textSize="20dp"
+            android:layout_marginLeft="35dp"
+            android:paddingBottom="20dp"
+            android:layout_marginRight="35dp"
+            android:inputType="text"
+            android:textColor="@color/White" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Email Address"
+            android:textColor="@color/White"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/calibri_bold"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tb_background"
+            android:hint="Enter your Email Address"
+            android:textColorHint="@color/hint_backcolor"
+            android:fontFamily="@font/calibri_regular"
+            android:textSize="20dp"
+            android:layout_marginLeft="35dp"
+            android:paddingBottom="20dp"
+            android:layout_marginRight="35dp"
+            android:inputType="text"
+            android:textColor="@color/White" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="35dp"
+            android:background="@drawable/ic_sign_up"
+            android:fontFamily="@font/calibri_bold"
+            android:text="SIGN UP"
+            android:textColor="@color/White"
+            android:textSize="20dp" />
+    </LinearLayout>
+</ScrollView>
