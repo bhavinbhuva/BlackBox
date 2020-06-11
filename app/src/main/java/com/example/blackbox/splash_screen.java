@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import javax.security.auth.login.LoginException;
+
 public class splash_screen extends AppCompatActivity {
 
     @Override
@@ -26,7 +28,7 @@ public class splash_screen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i=new Intent(splash_screen.this,MainActivity.class);
+                Intent i=new Intent(splash_screen.this, login.class);
                 //Intent is used to switch from one activity to another.
 
                 startActivity(i);

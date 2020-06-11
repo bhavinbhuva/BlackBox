@@ -31,6 +31,7 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/edtlogin_usnm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
@@ -75,6 +76,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/btnsingin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
@@ -87,6 +89,7 @@
             android:textSize="20dp" />
 
         <Button
+            android:id="@+id/btnsignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
