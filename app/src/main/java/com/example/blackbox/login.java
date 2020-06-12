@@ -42,22 +42,18 @@ public class login extends AppCompatActivity {
                     // Toast.makeText(getApplicationContext(),"Password is Required",Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (pass.length() < 6 && pass.length() > 20) {
-                    Toast.makeText(getApplicationContext(), "Password too short, enter 6 to 10 characters!", Toast.LENGTH_LONG).show();
+                if (pass.length() < 6 ) {
+                    Toast.makeText(getApplicationContext(), "Password Too Short Enter 6 or More!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 startActivity(new Intent(login.this, MainActivity.class));
             }
         });
-
         btnsingup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(login.this, register.class));
             }
         });
-
-
-
     }
 }
