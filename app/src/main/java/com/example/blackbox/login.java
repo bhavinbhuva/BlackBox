@@ -10,10 +10,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class login extends AppCompatActivity {
 
+    String UserID;
     EditText txt_mobno,txt_pass;
     Button btnsingup,btnsignin;
+
+    FirebaseAuth fauth;
+    FirebaseUser fuser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +32,20 @@ public class login extends AppCompatActivity {
         btnsingup = findViewById(R.id.btnsignup);
         btnsignin = findViewById(R.id.btnsingin);
 
+        fauth = FirebaseAuth.getInstance();
+
+        if (fauth.getCurrentUser() != null) {
+            startActivity(new Intent(login.this, MainActivity.class));
+            finish();
+        }
         btnsignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String email = txt_mobno.getText().toString().trim();
+                String mob = txt_mobno.getText().toString().trim();
                 String pass = txt_pass.getText().toString().trim();
 
-                if (TextUtils.isEmpty(email)) {
+                if (TextUtils.isEmpty(mob)) {
 
                     txt_mobno.setError("Mobile Number is Required");
                     //Toast.makeText(getApplicationContext(), "Select Blood Group!", Toast.LENGTH_SHORT).show();
@@ -41,12 +55,18 @@ public class login extends AppCompatActivity {
                     txt_pass.setError("password is required");
                     // Toast.makeText(getApplicationContext(),"Password is Required",Toast.LENGTH_LONG).show();
                     return;
+
                 }
                 if (pass.length() < 6 ) {
                     Toast.makeText(getApplicationContext(), "Password Too Short Enter 6 or More!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                startActivity(new Intent(login.this, MainActivity.class));
+                 fuser = fauth.getCurrentUser();
+                 UserID = fuser.getUid();
+
+                 Intent i = new Intent(getApplicationContext(), otpverify.class);
+                 i.putExtra("phonenumber", "+91" + txt_mobno.getText().toString());
+                 startActivity(i);
             }
         });
         btnsingup.setOnClickListener(new View.OnClickListener() {

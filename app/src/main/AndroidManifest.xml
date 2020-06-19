@@ -14,16 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".otp_verify"></activity>
-        <activity
-            android:name=".chatting"
-            android:theme="@style/AppTheme_actionbar" />
+        <activity android:name=".setting_manageprofile"></activity>
+        <activity android:name=".otpverify" />
+        <activity android:name=".chatting" />
         <activity android:name=".Scan" />
         <activity android:name=".payment" />
         <activity android:name=".metting" />
         <activity android:name=".aboutus" />
         <activity android:name=".services" />
-        <activity android:name=".help" />
         <activity
             android:name=".register"
             android:screenOrientation="portrait"
@@ -31,11 +29,6 @@
         <activity
             android:name=".login"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".splash_screen"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,6 +36,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".splash_screen"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:ignore="LockedOrientationActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

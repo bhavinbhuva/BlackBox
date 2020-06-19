@@ -1,28 +1,40 @@
 package com.example.blackbox;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    LinearLayout chat,scan,ledger,payment,metting,help,aboutus,services;
+    LinearLayout chat,scan,ledger,payment,metting,setting,aboutus,services;
     FrameLayout frameLayout;
     LinearLayout layout_disconnected;
     ScrollView layout_connected;
+    TextView username;
+    String UserID, usnm;
+
+    private DatabaseReference reff;
+    private FirebaseUser mUser;
+    private FirebaseAuth fauth;
 
     @SuppressLint("ShowToast")
     @Override
@@ -30,14 +42,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        username = findViewById(R.id.txtmain_name);
         chat = findViewById(R.id.menu_chatting);
         scan = findViewById(R.id.menu_scanning);
         ledger = findViewById(R.id.menu_ledger);
         payment = findViewById(R.id.menu_payment);
         metting = findViewById(R.id.menu_meeting);
-        help = findViewById(R.id.menu_help);
+        setting = findViewById(R.id.menu_setting);
         aboutus = findViewById(R.id.menu_aboutus);
         services= findViewById(R.id.menu_services);
+
 
         frameLayout = findViewById(R.id.frame_dashboard);
         layout_disconnected = findViewById(R.id.layout_disconnected);
@@ -75,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(frameLayout,"Not Connected",Snackbar.LENGTH_LONG).show();
         }
 
-        help.setOnClickListener(new View.OnClickListener() {
+        setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, help.class));
+                startActivity(new Intent(MainActivity.this, setting_manageprofile.class));
             }
         });
         aboutus.setOnClickListener(new View.OnClickListener() {
@@ -93,5 +107,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, services.class));
             }
         });
+
+        fauth = FirebaseAuth.getInstance();
+        reff = FirebaseDatabase.getInstance().getReference().child("registration");
+        mUser = fauth.getCurrentUser();
+        UserID = mUser.getUid();
+        Toast.makeText(getApplicationContext(),"userid"+UserID,Toast.LENGTH_SHORT).show();
+
+
+        reff.child(UserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                 usnm = dataSnapshot.child("name").getValue(String.class);
+                 username.setText(usnm);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

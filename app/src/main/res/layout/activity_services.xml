@@ -1,10 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/gray"
     android:layout_height="match_parent"
-    tools:context=".services">
+    tools:context=".services"
+    android:background="@color/gray"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:text="            Chintan Dixit And Associates
+        \n                                   And \n   Black Box Consultancy Services Pvt.Ltd"
+        android:textSize="20dp"
+        android:textColor="@color/White"
+        >
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Sr.No.	                  Services\n
+   1	                  Accounting \n     2	            Company Work ( ex - ROC \n                    Return,DIR KYC ,..ETC. )
+\n     3	           Audit (Ex - Tax Audit,Company\n                   Audit,Trust Audit And Internal Audit)
+4	GST Work ( GSTR3B,GSTR1,GSTR9,GSTR9C….,ETC )
+5	Certification (Visa Certificate, Networth Certificate,Bank Certificate ,….etc)
+6	Scrutiny
+7	Firm Registration/ROF
+8	Income Tax Work ( IT Return , PAN Application….etc)
+9	RERA Work (Rera Return,Rera Certificate ….,etc)
+10	TDS Work ( TDS Return, TAN Application…..,etc)
+"
+        android:textColor="@color/White"
+        android:textSize="19dp"></TextView>
+
+</LinearLayout>

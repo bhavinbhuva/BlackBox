@@ -62,10 +62,9 @@
                     android:textSize="35dp"/>
 
                 <TextView
-                    android:id="@+id/txt_name"
+                    android:id="@+id/txtmain_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Gaurav Thankkar"
                     android:layout_below="@id/txt_welcome"
                     android:layout_marginTop="6dp"
                     android:fontFamily="@font/calibri_regular"
@@ -268,7 +267,7 @@
                     android:layout_margin="10dp">
 
                     <LinearLayout
-                        android:id="@+id/menu_help"
+                        android:id="@+id/menu_setting"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
