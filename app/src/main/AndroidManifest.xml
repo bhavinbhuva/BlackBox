@@ -19,7 +19,13 @@
         <activity android:name=".chatting" />
         <activity android:name=".Scan" />
         <activity android:name=".payment" />
-        <activity android:name=".metting" />
+        <activity android:name=".metting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".aboutus" />
         <activity android:name=".services" />
         <activity
@@ -30,11 +36,7 @@
             android:name=".login"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".splash_screen"
