@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".setting_manageprofile">
+    tools:context=".editprofile">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -135,7 +135,6 @@
             android:background="@drawable/tb_background"
             android:textColorHint="@color/hint_backcolor"
             android:fontFamily="@font/calibri_regular"
-            android:text="hedbhhhbbbbbb"
             android:textSize="20dp"
             android:layout_marginLeft="35dp"
             android:paddingBottom="20dp"
@@ -160,29 +159,27 @@
             android:background="@drawable/tb_background"
             android:textColorHint="@color/hint_backcolor"
             android:fontFamily="@font/calibri_regular"
-            android:text="nicfdisjcrjdci"
             android:textSize="20dp"
             android:layout_marginLeft="35dp"
             android:paddingBottom="20dp"
             android:layout_marginRight="35dp"
-            android:inputType="textPassword"
             android:textColor="@color/White" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/ep_btnedit"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/ic_sign_up"
-            android:fontFamily="@font/calibri_bold"
-            android:layout_alignParentLeft="true"
-            android:text="EDIT"
-            android:textColor="@color/White"
-            android:textSize="20dp" />
+            <Button
+                android:id="@+id/ep_btnedit"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_sign_up"
+                android:fontFamily="@font/calibri_bold"
+                android:layout_alignParentLeft="true"
+                android:text="EDIT"
+                android:textColor="@color/White"
+                android:textSize="20dp" />
 
             <Button
                 android:id="@+id/btnlogout"

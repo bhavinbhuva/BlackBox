@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout layout_disconnected;
     ScrollView layout_connected;
     TextView username;
-    String UserID, usnm;
+    String UserID, usnm,mobno,pass;
 
     private DatabaseReference reff;
     private FirebaseUser mUser;
@@ -53,6 +53,15 @@ public class MainActivity extends AppCompatActivity {
         services= findViewById(R.id.menu_services);
 
 
+        fauth = FirebaseAuth.getInstance();
+        reff = FirebaseDatabase.getInstance().getReference().child("registration");
+        mUser = fauth.getCurrentUser();
+        UserID = mUser.getUid();
+
+        if(mUser ==null)
+        {
+            startActivity(new Intent(MainActivity.this,login.class));
+        }
         frameLayout = findViewById(R.id.frame_dashboard);
         layout_disconnected = findViewById(R.id.layout_disconnected);
         layout_connected = findViewById(R.id.layout_connected);
@@ -92,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, setting_manageprofile.class));
+                startActivity(new Intent(MainActivity.this, editprofile.class));
             }
         });
         aboutus.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         reff = FirebaseDatabase.getInstance().getReference().child("registration");
         mUser = fauth.getCurrentUser();
         UserID = mUser.getUid();
-        Toast.makeText(getApplicationContext(),"userid"+UserID,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"userid " + UserID,Toast.LENGTH_LONG).show();
 
 
         reff.child(UserID).addValueEventListener(new ValueEventListener() {
@@ -120,7 +129,11 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                  usnm = dataSnapshot.child("name").getValue(String.class);
-                 username.setText(usnm);
+                 mobno = dataSnapshot.child("mobileno").getValue(String.class);
+                 pass = dataSnapshot.child("pass").getValue(String.class);
+Toast.makeText(getApplicationContext(),"mobile no:"+mobno+"password"+pass,Toast.LENGTH_LONG).show();
+
+                username.setText(usnm);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

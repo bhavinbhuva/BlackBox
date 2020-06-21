@@ -18,28 +18,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class setting_manageprofile extends AppCompatActivity {
-
-
-    FirebaseUser fuser;
-    FirebaseAuth fauth;
-    DatabaseReference reff;
+public class editprofile extends AppCompatActivity {
 
     String UserID,nm,mobno,pnno,adhrno,eml,pass;
     EditText edtnm,edtmobno,edtpanno,edtadharno,edteml,edtpass;
     Button btneditprofile,btnlogout;
 
+    private DatabaseReference reff;
+    private FirebaseUser mUser;
+    private FirebaseAuth fauth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting_manageprofile);
+        setContentView(R.layout.activity_editprofile);
+
 
         fauth = FirebaseAuth.getInstance();
-        reff = FirebaseDatabase.getInstance().getReference("regidtration");
-        fuser = fauth.getCurrentUser();
-        UserID = fuser.getUid();
-
-        Toast.makeText(this,"userid:"+UserID,Toast.LENGTH_LONG).show();
+        reff = FirebaseDatabase.getInstance().getReference().child("registration");
+        mUser = fauth.getCurrentUser();
+        UserID = mUser.getUid();
 
         edtnm =findViewById(R.id.ep_nm);
         edtmobno = findViewById(R.id.ep_mobno);
@@ -50,22 +48,17 @@ public class setting_manageprofile extends AppCompatActivity {
         btneditprofile = findViewById(R.id.ep_btnedit);
         btnlogout = findViewById(R.id.btnlogout);
 
-        reff.child("lLVo0Zorc9WFX0VV4iyRL4FALmu1").addValueEventListener(new ValueEventListener() {
+        reff.child(UserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 nm = dataSnapshot.child("name").getValue(String.class);
-                mobno=dataSnapshot.child("mobileno").getValue(String.class);
+                mobno = dataSnapshot.child("mobileno").getValue(String.class);
                 pnno = dataSnapshot.child("panno").getValue(String.class);
-                adhrno =dataSnapshot.child("adharno").getValue(String.class);
+                adhrno = dataSnapshot.child("adharno").getValue(String.class);
                 eml = dataSnapshot.child("email").getValue(String.class);
                 pass = dataSnapshot.child("pass").getValue(String.class);
-
-                Toast.makeText(setting_manageprofile.this, UserID, Toast.LENGTH_LONG).show();
-
-                Toast.makeText(setting_manageprofile.this, "Name :" + nm, Toast.LENGTH_SHORT).show();
-                Toast.makeText(setting_manageprofile.this, "Mobno :" + mobno, Toast.LENGTH_SHORT).show();
-                Toast.makeText(setting_manageprofile.this, "pnno :" + pnno, Toast.LENGTH_SHORT).show();
+    //            Toast.makeText(getApplicationContext(),"Name : "+nm+" mobile no : " +mobno+"panno : "+pnno+"Adharno : "+adhrno +"Email : "+eml+" password : "+pass,Toast.LENGTH_LONG).show();
 
                 edtnm.setText(nm);
                 edtmobno.setText(mobno);
@@ -73,13 +66,13 @@ public class setting_manageprofile extends AppCompatActivity {
                 edtadharno.setText(adhrno);
                 edteml.setText(eml);
                 edtpass.setText(pass);
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+        
         btneditprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +84,7 @@ public class setting_manageprofile extends AppCompatActivity {
                 reff.child(UserID).child("email").setValue(edteml.getText().toString());
                 reff.child(UserID).child("pass").setValue(edtpass.getText().toString());
 
+                Toast.makeText(getApplicationContext(),"Update Successfully",Toast.LENGTH_LONG).show();
             }
         });
         btnlogout.setOnClickListener(new View.OnClickListener() {
@@ -98,8 +92,10 @@ public class setting_manageprofile extends AppCompatActivity {
             public void onClick(View v) {
 
                 fauth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(setting_manageprofile.this, login.class));
+                Intent i = new Intent(editprofile.this, login.class);
+                i.addFlags(i.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(i.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
 
             }
         });

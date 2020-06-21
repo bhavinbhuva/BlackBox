@@ -17,7 +17,8 @@ import java.util.Calendar;
 
 public class metting extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     TextView dispdate;
-    Button sel_date;
+    Button sel_date,sel_time;
+    String date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +26,7 @@ public class metting extends AppCompatActivity implements DatePickerDialog.OnDat
 
         dispdate = findViewById(R.id.disp_date);
         sel_date = findViewById(R.id.btn_sel_date);
+        sel_time = findViewById(R.id.btn_sel_time);
 
         sel_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,7 +34,12 @@ public class metting extends AppCompatActivity implements DatePickerDialog.OnDat
                 showDatePickerDailog();
             }
         });
+        sel_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
 
     }
     private void showDatePickerDailog(){
@@ -53,7 +60,7 @@ public class metting extends AppCompatActivity implements DatePickerDialog.OnDat
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         month = month + 1;
-        String date = "Date :"+dayOfMonth+"/"+month+"/"+year;
-        dispdate.setText(date);
+         date = "Date :"+dayOfMonth+"/"+month+"/"+year;
+         dispdate.setText(date);
     }
 }

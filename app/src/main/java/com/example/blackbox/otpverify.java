@@ -17,6 +17,7 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
@@ -27,8 +28,9 @@ public class otpverify extends AppCompatActivity {
     private String verificationid;
     private PhoneAuthProvider.ForceResendingToken resendcode;
     private FirebaseAuth fauth;
+    FirebaseUser fuser;
 
-    String phnno;
+    String phnno,Userid;
     EditText input_otp;
     Button creteccount,sendcodeagain;
 
@@ -38,13 +40,15 @@ public class otpverify extends AppCompatActivity {
         setContentView(R.layout.activity_otp_verify);
 
         fauth = FirebaseAuth.getInstance();
+        fuser = fauth.getCurrentUser();
+        Userid = fuser.getUid();
 
         input_otp = findViewById(R.id.edtotpverify);
         creteccount=findViewById(R.id.btnotp_verify);
         sendcodeagain =findViewById(R.id.btnotp_resend);
 
          phnno = getIntent().getStringExtra("phonenumber");
-         Toast.makeText(getApplicationContext(),phnno,Toast.LENGTH_SHORT).show();
+     //    Toast.makeText(getApplicationContext(),phnno,Toast.LENGTH_SHORT).show();
 
         sendVerificationCode(phnno);
 
@@ -66,35 +70,36 @@ public class otpverify extends AppCompatActivity {
                     input_otp.requestFocus();
                     return;
                 }
-                Toast.makeText(getApplicationContext(),code,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),code,Toast.LENGTH_SHORT).show();
                 verifyCode(code);
             }
         });
     }
 
     private void verifyCode(String code){
-        Toast.makeText(getApplicationContext(),"verify code method ukkered",Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(),"verify code method ukkered",Toast.LENGTH_SHORT).show();
 
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationid, code);
         input_otp.setText(verificationid);
         signInWithCredential(credential);
     }
-
     private void signInWithCredential(PhoneAuthCredential credential)
     {
+        Toast.makeText(otpverify.this,Userid, Toast.LENGTH_LONG).show();
+
         fauth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+    //                        fuser.delete();
+                           //  Toast.makeText(otpverify.this, Userid , Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(otpverify.this, MainActivity.class);
+                            Intent intent = new Intent(otpverify.this,MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
-
                         }
                         else {
-
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(otpverify.this,"Invalid Code", Toast.LENGTH_LONG).show();
 
@@ -108,7 +113,7 @@ public class otpverify extends AppCompatActivity {
     private void sendVerificationCode(String number)
     {
 
-        Toast.makeText(otpverify.this, "send verifiction method ukkeerd",Toast.LENGTH_LONG).show();
+    //    Toast.makeText(otpverify.this, "send verifiction method ukkeerd",Toast.LENGTH_LONG).show();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,
                 60,
@@ -132,7 +137,7 @@ public class otpverify extends AppCompatActivity {
 
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            Toast.makeText(getApplicationContext(),"send code successfulll",Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getApplicationContext(),"send code successfulll",Toast.LENGTH_SHORT).show();
             super.onCodeSent(s, forceResendingToken);
              verificationid = s;
              resendcode = forceResendingToken;
@@ -141,7 +146,7 @@ public class otpverify extends AppCompatActivity {
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
             String code = phoneAuthCredential.getSmsCode();
             if (code != null){
-                Toast.makeText(getApplicationContext(),"SEND CODE SUCCESSFULL",Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(getApplicationContext(),"SEND CODE SUCCESSFULL",Toast.LENGTH_SHORT).show();
       //          progressBar.setVisibility(View.VISIBLE);
                 verifyCode(code);
             }

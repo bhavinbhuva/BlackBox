@@ -1,5 +1,6 @@
 package com.example.blackbox;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,13 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class login extends AppCompatActivity {
 
-    String UserID;
-    EditText txt_mobno,txt_pass;
+
+    EditText txt_email,txt_pass;
     Button btnsingup,btnsignin;
 
     FirebaseAuth fauth;
@@ -27,7 +31,7 @@ public class login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        txt_mobno = findViewById(R.id.edtlogin_usnm);
+        txt_email = findViewById(R.id.edtlogin_email);
         txt_pass =  findViewById(R.id.edtlogin_pass);
         btnsingup = findViewById(R.id.btnsignup);
         btnsignin = findViewById(R.id.btnsingin);
@@ -38,35 +42,39 @@ public class login extends AppCompatActivity {
             startActivity(new Intent(login.this, MainActivity.class));
             finish();
         }
+
         btnsignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String mob = txt_mobno.getText().toString().trim();
+                String email = txt_email.getText().toString().trim();
                 String pass = txt_pass.getText().toString().trim();
 
-                if (TextUtils.isEmpty(mob)) {
-
-                    txt_mobno.setError("Mobile Number is Required");
-                    //Toast.makeText(getApplicationContext(), "Select Blood Group!", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(email)) {
+                    txt_email.setError("Email is Required");
                     return;
                 }
                 if (TextUtils.isEmpty(pass)) {
                     txt_pass.setError("password is required");
-                    // Toast.makeText(getApplicationContext(),"Password is Required",Toast.LENGTH_LONG).show();
                     return;
-
                 }
                 if (pass.length() < 6 ) {
                     Toast.makeText(getApplicationContext(), "Password Too Short Enter 6 or More!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                 fuser = fauth.getCurrentUser();
-                 UserID = fuser.getUid();
+                fauth.signInWithEmailAndPassword(email, pass)
+                        .addOnCompleteListener(login.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                 Intent i = new Intent(getApplicationContext(), otpverify.class);
-                 i.putExtra("phonenumber", "+91" + txt_mobno.getText().toString());
-                 startActivity(i);
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Login", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(login.this, MainActivity.class));
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Login Fail or user name not found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
         btnsingup.setOnClickListener(new View.OnClickListener() {

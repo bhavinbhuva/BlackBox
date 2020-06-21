@@ -112,11 +112,12 @@ public class register extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
+                                    Toast.makeText(register.this, UserID, Toast.LENGTH_SHORT).show();
+
                                     Toast.makeText(register.this, "Registration Complete ", Toast.LENGTH_SHORT).show();
-
-                                    Toast.makeText(register.this,"userid"+ UserID , Toast.LENGTH_SHORT).show();
-
-                                    startActivity(new Intent(register.this, MainActivity.class));
+                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+  //                                  i.putExtra("phonenumber", "+91" + input_mobno.getText().toString());
+                                    startActivity(i);
                                 }
                             });
                         }
