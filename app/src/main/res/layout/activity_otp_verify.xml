@@ -16,7 +16,57 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/calibri_bold"
+            android:text="Create Account"
+            android:textColor="@color/White"
+            android:textSize="35dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/layout_back"
+            android:orientation="vertical">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/ccp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:ccpDialog_backgroundColor="@color/gray"
+                app:ccpDialog_textColor="@color/White"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_contentColor="@color/White"
+                app:ccp_showFullName="true"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="false"
+                app:ccp_textGravity="LEFT" />
+
+            <EditText
+                android:id="@+id/edt_phn_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/tb_back_gray"
+                android:hint="Enter Phone Number"
+                android:inputType="phone"
+                android:paddingBottom="10dp"
+                android:singleLine="true"
+                android:textColor="@color/White"
+                android:textColorHint="@color/hint_backcolor" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
             android:fontFamily="@font/calibri_bold"
             android:text="Enter OTP"
             android:textColor="@color/White"

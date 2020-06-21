@@ -20,10 +20,14 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
 
 public class otpverify extends AppCompatActivity {
+
+    CountryCodePicker ccp;
+    EditText editTextCarrierNumber;
 
     private String verificationid;
     private PhoneAuthProvider.ForceResendingToken resendcode;
@@ -39,6 +43,17 @@ public class otpverify extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verify);
 
+        ccp = findViewById(R.id.ccp);
+        editTextCarrierNumber = findViewById(R.id.edt_phn_number);
+        /*
+        * put this two line in onclick function and that will
+        * Return phone number with country code ex = +91 9773049694
+
+            -> merge phone number with country code   /* ccp.registerCarrierNumberEditText(editTextCarrierNumber);
+            -> Return full formated phone number      /* String number = ccp.getFormattedFullNumber().toString();
+        */
+
+
         fauth = FirebaseAuth.getInstance();
         fuser = fauth.getCurrentUser();
         Userid = fuser.getUid();
@@ -48,7 +63,7 @@ public class otpverify extends AppCompatActivity {
         sendcodeagain =findViewById(R.id.btnotp_resend);
 
          phnno = getIntent().getStringExtra("phonenumber");
-     //    Toast.makeText(getApplicationContext(),phnno,Toast.LENGTH_SHORT).show();
+         //Toast.makeText(getApplicationContext(),phnno,Toast.LENGTH_SHORT).show();
 
         sendVerificationCode(phnno);
 
