@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">BLACK BOX</string>
+    <string-array name="services_list">
+        <item>service item 1</item>
+        <item>service item 2</item>
+        <item>service item 3</item>
+        <item>service item 4</item>
+        <item>service item 5</item>
+        <item>service item 6</item>
+        <item>service item 7</item>
+    </string-array>
 </resources>
