@@ -3,30 +3,36 @@ package com.example.blackbox;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.example.blackbox.login.MyPREFERENCES;
+import static com.example.blackbox.login.Userkey;
 
 public class editprofile extends AppCompatActivity {
 
-    String UserID,nm,mobno,pnno,adhrno,eml,pass;
+    String nm,mobno,pnno,adhrno,eml,pass;
     EditText edtnm,edtmobno,edtpanno,edtadharno,edteml,edtpass;
+    RequestQueue requestQueue;
     Button btneditprofile,btnlogout;
 
-    private DatabaseReference reff;
-    private FirebaseUser mUser;
-    private FirebaseAuth fauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +40,7 @@ public class editprofile extends AppCompatActivity {
         setContentView(R.layout.activity_editprofile);
 
 
-        fauth = FirebaseAuth.getInstance();
-        reff = FirebaseDatabase.getInstance().getReference().child("registration");
-        mUser = fauth.getCurrentUser();
-        UserID = mUser.getUid();
-
-        edtnm =findViewById(R.id.ep_nm);
+        edtnm = findViewById(R.id.ep_nm);
         edtmobno = findViewById(R.id.ep_mobno);
         edtpanno = findViewById(R.id.ep_panno);
         edtadharno = findViewById(R.id.ep_adharno);
@@ -48,56 +49,54 @@ public class editprofile extends AppCompatActivity {
         btneditprofile = findViewById(R.id.ep_btnedit);
         btnlogout = findViewById(R.id.btnlogout);
 
-        reff.child(UserID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        requestQueue = Volley.newRequestQueue(this);
 
-                nm = dataSnapshot.child("name").getValue(String.class);
-                mobno = dataSnapshot.child("mobileno").getValue(String.class);
-                pnno = dataSnapshot.child("panno").getValue(String.class);
-                adhrno = dataSnapshot.child("adharno").getValue(String.class);
-                eml = dataSnapshot.child("email").getValue(String.class);
-                pass = dataSnapshot.child("pass").getValue(String.class);
-    //            Toast.makeText(getApplicationContext(),"Name : "+nm+" mobile no : " +mobno+"panno : "+pnno+"Adharno : "+adhrno +"Email : "+eml+" password : "+pass,Toast.LENGTH_LONG).show();
+        String dispurl = "http://192.168.43.122/webappdb/disp.php";
 
-                edtnm.setText(nm);
-                edtmobno.setText(mobno);
-                edtpanno.setText(pnno);
-                edtadharno.setText(adhrno);
-                edteml.setText(eml);
-                edtpass.setText(pass);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        
-        btneditprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                reff.child(UserID).child("name").setValue(edtnm.getText().toString());
-                reff.child(UserID).child("mobile").setValue(edtmobno.getText().toString());
-                reff.child(UserID).child("panno").setValue(edtpanno.getText().toString());
-                reff.child(UserID).child("adharno").setValue(edtadharno.getText().toString());
-                reff.child(UserID).child("email").setValue(edteml.getText().toString());
-                reff.child(UserID).child("pass").setValue(edtpass.getText().toString());
-
-                Toast.makeText(getApplicationContext(),"Update Successfully",Toast.LENGTH_LONG).show();
-            }
-        });
         btnlogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove(Userkey);
+                editor.commit();
 
-                fauth.getInstance().signOut();
-                Intent i = new Intent(editprofile.this, login.class);
-                i.addFlags(i.FLAG_ACTIVITY_CLEAR_TOP);
-                i.addFlags(i.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
+                finish();
 
+                Intent intent = new Intent(editprofile.this, login.class);
+                startActivity(intent);
             }
         });
+
+        /*JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                dispurl,null, new Response.Listener<JSONObject>() {    @Override
+        public void onResponse(JSONObject response) {
+
+            Toast.makeText(getApplicationContext(),"before try",Toast.LENGTH_LONG).show();
+            try {
+
+                Toast.makeText(getApplicationContext(),"try click",Toast.LENGTH_LONG).show();
+                JSONArray students = response.getJSONArray("user_info");
+                for (int i = 0 ; i < students.length();i++)
+                {
+                    JSONObject student = new JSONObject(String.valueOf(i));
+                    String nm = student.getString("name");
+                    String unm = student.getString("user_name");
+                    String upass = student.getString("user_pass");
+                    edtnm.append(nm);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+*/
     }
+
 }

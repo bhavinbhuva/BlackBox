@@ -46,10 +46,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Mobile No"
+            android:text="Mobile No."
             android:textColor="@color/White"
             android:layout_marginLeft="35dp"
-            android:layout_marginTop="10dp"
             android:fontFamily="@font/calibri_bold"
             android:textSize="20dp" />
 
@@ -66,9 +65,7 @@
             android:paddingBottom="20dp"
             android:layout_marginRight="35dp"
             android:inputType="number"
-            android:maxLength="10"
             android:textColor="@color/White" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -141,7 +138,7 @@
             android:layout_marginLeft="35dp"
             android:paddingBottom="20dp"
             android:layout_marginRight="35dp"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:textColor="@color/White" />
 
         <TextView
