@@ -11,23 +11,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class register extends AppCompatActivity {
 
-    String UserID="";
     EditText input_nm,input_mobno,input_panno,input_adharno,input_email,input_pass;
-    Userclass userclass;
-
-    DatabaseReference reff;
-    FirebaseAuth fauth;
-    FirebaseUser fuser;
+    RequestQueue requestQueue;
+    String insurl = "http://192.168.43.122/BlackBox/api/registration_insert.php";
 
     Button btnregister;
     @Override
@@ -43,14 +42,14 @@ public class register extends AppCompatActivity {
         input_pass = findViewById(R.id.edtreg_pass);
         btnregister = findViewById(R.id.btnregsuccess);
 
-        fauth = FirebaseAuth.getInstance();
+        requestQueue = Volley.newRequestQueue(this);
 
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final String nm = input_nm.getText().toString().trim();
-                final String mobno = input_mobno.getText().toString().trim();
+                final String nm = input_nm.getText().toString();
+                final String mobno = input_mobno.getText().toString();
                 final String panno = input_panno.getText().toString().trim();
                 final String adharno = input_adharno.getText().toString().trim();
                 final String email = input_email.getText().toString().trim();
@@ -92,42 +91,47 @@ public class register extends AppCompatActivity {
                     input_pass.setError("Enter 6 to 20 characters or digit!");
                     return;
                 }
-                userclass = new Userclass();
-                reff = FirebaseDatabase.getInstance().getReference("registration");
-                //userclass.setName(nm);
-                //reff.push().setValue(userclass);
-                 Toast.makeText(register.this,"reffrence ::"+reff,Toast.LENGTH_LONG).show();
-                 fauth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+
+                StringRequest request = new StringRequest(Request.Method.POST, insurl, new Response.Listener<String>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onResponse(String response) {
 
-                       if (task.isSuccessful()) {
-                            fuser = fauth.getCurrentUser();
-                            UserID = fuser.getUid();
-                            Toast.makeText(register.this, UserID, Toast.LENGTH_SHORT).show();
-
-                            Userclass userdata = new Userclass(nm, mobno, panno, adharno, email, pass, UserID);
-
-                            reff.child(UserID).setValue(userdata).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-
-                                    Toast.makeText(register.this, UserID, Toast.LENGTH_SHORT).show();
-
-                                    Toast.makeText(register.this, "Registration Complete ", Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-  //                                  i.putExtra("phonenumber", "+91" + input_mobno.getText().toString());
-                                    startActivity(i);
-                                }
-                            });
+                        if(response.trim().equals("Mobile number or email exist"))
+                        {
+                            Toast.makeText(getApplicationContext(),"Mobile number or email exist ",Toast.LENGTH_LONG).show();
                         }
-                        else {
-                            Toast.makeText(register.this, "Error !" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(),"Registration Successfully",Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(register.this,login.class);
+                            startActivity(i);
                         }
+
                     }
-                });
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> parameters = new HashMap<String, String>();
+                        parameters.put("uname", nm);
+                        parameters.put("umobno", mobno);
+                        parameters.put("upanno", panno);
+                        parameters.put("uadharno", adharno);
+                        parameters.put("uemail", email);
+                        parameters.put("upass", pass);
+                        return parameters;
+                    }
+                };
+                requestQueue.add(request);
+
             }
         });
     }
 }
+
 

@@ -1,3 +1,4 @@
+/*
 package com.example.blackbox;
 
 import android.content.Intent;
@@ -20,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hbb20.CountryCodePicker;
 
 import java.util.concurrent.TimeUnit;
@@ -29,14 +32,18 @@ public class otpverify extends AppCompatActivity {
     CountryCodePicker ccp;
     EditText editTextCarrierNumber;
 
-    private String verificationid;
-    private PhoneAuthProvider.ForceResendingToken resendcode;
-    private FirebaseAuth fauth;
-    FirebaseUser fuser;
 
-    String phnno,Userid;
+    private PhoneAuthProvider.ForceResendingToken resendcode;
+
+    FirebaseAuth fauth;
+    DatabaseReference reff;
+    FirebaseUser fuser;
+    Userclass userclass;
+
+    private String verificationid;
+    String nm,phnno,pnno,adharno,eml,pass,Userid;
     EditText input_otp;
-    Button creteccount,sendcodeagain;
+    Button creteccount,sendcodeagain,sendcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,27 +52,39 @@ public class otpverify extends AppCompatActivity {
 
         ccp = findViewById(R.id.ccp);
         editTextCarrierNumber = findViewById(R.id.edt_phn_number);
-        /*
+        sendcode = findViewById(R.id.btn_send_code);
+        */
+/*
         * put this two line in onclick function and that will
         * Return phone number with country code ex = +91 9773049694
 
             -> merge phone number with country code   /* ccp.registerCarrierNumberEditText(editTextCarrierNumber);
-            -> Return full formated phone number      /* String number = ccp.getFormattedFullNumber().toString();
-        */
+            -> Return full formated phone number      /* phnno = ccp.getFormattedFullNumber().toString();
+        *//*
 
-
-        fauth = FirebaseAuth.getInstance();
-        fuser = fauth.getCurrentUser();
-        Userid = fuser.getUid();
+//        reff = FirebaseDatabase.getInstance().getReference().child("registration");
+//        fauth = FirebaseAuth.getInstance();
 
         input_otp = findViewById(R.id.edtotpverify);
         creteccount=findViewById(R.id.btnotp_verify);
         sendcodeagain =findViewById(R.id.btnotp_resend);
+        sendcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ccp.registerCarrierNumberEditText(editTextCarrierNumber);
+                phnno = ccp.getFormattedFullNumber().toString();
+                sendVerificationCode(phnno);
+            }
+        });
 
-         phnno = getIntent().getStringExtra("phonenumber");
-         //Toast.makeText(getApplicationContext(),phnno,Toast.LENGTH_SHORT).show();
 
-        sendVerificationCode(phnno);
+        nm = getIntent().getStringExtra("rname");
+        pnno = getIntent().getStringExtra("rpanno");
+        adharno = getIntent().getStringExtra("radharno");
+        eml = getIntent().getStringExtra("remail");
+        pass = getIntent().getStringExtra("rpass");
+
+//        sendVerificationCode(phnno);
 
         sendcodeagain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +104,6 @@ public class otpverify extends AppCompatActivity {
                     input_otp.requestFocus();
                     return;
                 }
-                //Toast.makeText(getApplicationContext(),code,Toast.LENGTH_SHORT).show();
                 verifyCode(code);
             }
         });
@@ -94,35 +112,60 @@ public class otpverify extends AppCompatActivity {
     private void verifyCode(String code){
       //  Toast.makeText(getApplicationContext(),"verify code method ukkered",Toast.LENGTH_SHORT).show();
 
+*/
+/*
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationid, code);
+*//*
+
         input_otp.setText(verificationid);
-        signInWithCredential(credential);
+//        signInWithCredential(credential);
     }
     private void signInWithCredential(PhoneAuthCredential credential)
     {
-        Toast.makeText(otpverify.this,Userid, Toast.LENGTH_LONG).show();
+       // Toast.makeText(otpverify.this,Userid, Toast.LENGTH_LONG).show();
 
         fauth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-    //                        fuser.delete();
-                           //  Toast.makeText(otpverify.this, Userid , Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(otpverify.this,MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            fauth.createUserWithEmailAndPassword(eml, pass).addOnCompleteListener(
+                                    new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                            if (task.isSuccessful()) {
+                                                fuser = fauth.getCurrentUser();
+                                                Userid = fuser.getUid();
+                                                Toast.makeText(otpverify.this, Userid, Toast.LENGTH_SHORT).show();
+                                                Userclass userdata = new Userclass(nm, phnno, pnno, adharno, eml, pass, Userid);
+                                                Toast.makeText(otpverify.this, "Name : "+nm+"phnno : "+phnno+"Panno :"+pnno+"adharno :"+adharno+"email"+eml+"pass"+pass +"User id :"+Userid, Toast.LENGTH_LONG).show();
+
+                                                reff.child(Userid).setValue(userdata).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Toast.makeText(otpverify.this, Userid, Toast.LENGTH_SHORT).show();
+                                                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                                    }
+                                                });
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(otpverify.this, "Error !" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        } });
+                                        //Intent intent = new Intent(otpverify.this,MainActivity.class);
+                                        // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        // startActivity(intent);
                         }
                         else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(otpverify.this,"Invalid Code", Toast.LENGTH_LONG).show();
-
                             }
                             Toast.makeText(otpverify.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
-
                 });
     }
     private void sendVerificationCode(String number)
@@ -172,4 +215,4 @@ public class otpverify extends AppCompatActivity {
             Toast.makeText(otpverify.this, e.getMessage(),Toast.LENGTH_LONG).show();
         }
     };
-}
+}*/

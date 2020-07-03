@@ -43,7 +43,8 @@
                 app:ccp_showFullName="true"
                 app:ccp_showNameCode="false"
                 app:ccp_showPhoneCode="false"
-                app:ccp_textGravity="LEFT" />
+                app:ccp_textGravity="LEFT"
+                tools:ignore="MissingClass" />
 
             <EditText
                 android:id="@+id/edt_phn_number"
@@ -59,7 +60,21 @@
                 android:paddingBottom="10dp"
                 android:singleLine="true"
                 android:textColor="@color/White"
-                android:textColorHint="@color/hint_backcolor" />
+                android:textColorHint="@color/hint_backcolor" >
+            </EditText>
+            <Button
+                android:id="@+id/btn_send_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SEND CODE"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/White"
+                android:background="@drawable/ic_sign_in"
+                />
+
         </LinearLayout>
 
         <TextView
