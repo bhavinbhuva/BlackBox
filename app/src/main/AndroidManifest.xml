@@ -13,20 +13,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme"
+        tools:targetApi="m">
         <activity android:name=".editprofile" />
-        <activity android:name=".otpverify" >
 
-        </activity>
+
         <activity android:name=".chatting" />
-        <activity android:name=".Scan" />
-        <activity android:name=".payment" />
+             <activity android:name=".payment" />
         <activity android:name=".metting">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".aboutus" />
         <activity android:name=".services" />
@@ -37,7 +33,13 @@
         <activity
             android:name=".login"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"></activity>
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".splash_screen"
             android:screenOrientation="portrait"

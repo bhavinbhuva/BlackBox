@@ -53,7 +53,7 @@ public class login<global> extends AppCompatActivity {
         btnsingup = findViewById(R.id.btnsignup);
         btnsignin = findViewById(R.id.btnsingin);
         loginurl = "http://192.168.43.122/BlackBox/api/userlogin.php";
-        dispurl = "http://192.168.43.122/BlackBox/api/registration_disp.php";
+        dispurl = "";
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -83,7 +83,7 @@ public class login<global> extends AppCompatActivity {
                         if(response.trim().equals("User Not Found"))
                         {
 
-                            Toast.makeText(login.this,response,Toast.LENGTH_LONG).show();
+                            Toast.makeText(login.this,response.toString(),Toast.LENGTH_LONG).show();
                         }
                         else
                         {

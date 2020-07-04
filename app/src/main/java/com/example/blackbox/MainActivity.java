@@ -20,9 +20,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     ScrollView layout_connected;
     TextView username;
     String UserID, usnm,mobno,pass,userdispurl;
+    RequestQueue requestQueue;
 
     @SuppressLint("ShowToast")
     @Override
@@ -57,40 +63,40 @@ public class MainActivity extends AppCompatActivity {
         aboutus = findViewById(R.id.menu_aboutus);
         services= findViewById(R.id.menu_services);
 
+        userdispurl = "http://192.168.43.122/BlackBox/api/registration_disp.php";
         frameLayout = findViewById(R.id.frame_dashboard);
         layout_disconnected = findViewById(R.id.layout_disconnected);
         layout_connected = findViewById(R.id.layout_connected);
 
+        requestQueue = Volley.newRequestQueue(this);
+
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String UserID = preferences.getString(Userkey,"");
+        //Toast.makeText(getApplicationContext(),UserID,Toast.LENGTH_SHORT).show();
 
-        StringRequest stringRequest=new StringRequest(Request.Method.POST,userdispurl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if(response.trim().equals("User Not Found"))
-                {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, userdispurl, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
 
-                    Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                }
-            }
-        }, new Response.ErrorListener() {
+                            JSONArray jsonArray = response.getJSONArray("user");
+                            for (int i=0;i<jsonArray.length();i++)
+                            {
+                                JSONObject emp = jsonArray.getJSONObject(i);
+                                String name = emp.getString("uname");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
+                error.printStackTrace();
             }
-        }){
-            @Override
-            protected Map<String, String> getParams()  {
-                Map<String,String>parms=new HashMap<String, String>();
-                parms.put("uid", UserID);
-                return parms;
-            }
-        };
-        RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
+        });
+        requestQueue.add(request);
 
         if(ConnectionManager.checkConnection(getBaseContext())){
             Snackbar.make(frameLayout,"Connected",Snackbar.LENGTH_LONG).show();
@@ -144,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, services.class));
             }
         });
-
 
     }
 }
