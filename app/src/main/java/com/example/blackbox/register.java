@@ -26,7 +26,7 @@ public class register extends AppCompatActivity {
 
     EditText input_nm,input_mobno,input_panno,input_adharno,input_email,input_pass;
     RequestQueue requestQueue;
-    String insurl = "http://192.168.43.122/BlackBox/api/registration_insert.php";
+    String insurl = "http://192.168.43.13/blackbox/distribution/api/app/registration_insert.php";
 
     Button btnregister;
     @Override
@@ -92,12 +92,11 @@ public class register extends AppCompatActivity {
                     return;
                 }
 
-
                 StringRequest request = new StringRequest(Request.Method.POST, insurl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        if(response.trim().equals("Mobile number or email exist"))
+                        if(response.equals("Mobile number or email exist"))
                         {
                             Toast.makeText(getApplicationContext(),"Mobile number or email exist ",Toast.LENGTH_LONG).show();
                         }
@@ -107,7 +106,6 @@ public class register extends AppCompatActivity {
                             Intent i = new Intent(register.this,login.class);
                             startActivity(i);
                         }
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -128,7 +126,6 @@ public class register extends AppCompatActivity {
                     }
                 };
                 requestQueue.add(request);
-
             }
         });
     }

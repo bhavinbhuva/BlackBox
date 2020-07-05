@@ -11,28 +11,23 @@
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="m">
         <activity android:name=".editprofile" />
-        <activity android:name=".otpverify" >
+        <activity android:name=".chatting" />
+        <activity android:name=".Scan" >
 
         </activity>
-        <activity android:name=".chatting" />
-        <activity android:name=".Scan" />
         <activity android:name=".payment" />
         <activity android:name=".metting">
 
         </activity>
         <activity android:name=".aboutus" />
         <activity android:name=".services">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".register"
@@ -41,7 +36,13 @@
         <activity
             android:name=".login"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"></activity>
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".splash_screen"
             android:screenOrientation="portrait"
@@ -52,5 +53,4 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
     </application>
-
 </manifest>

@@ -16,13 +16,19 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     ScrollView layout_connected;
     TextView username;
     String UserID, usnm,mobno,pass,userdispurl;
+
+    RequestQueue requestQueue;
 
     @SuppressLint("ShowToast")
     @Override
@@ -57,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
         aboutus = findViewById(R.id.menu_aboutus);
         services= findViewById(R.id.menu_services);
 
+        requestQueue = Volley.newRequestQueue(this);
+
+        userdispurl = "http://192.168.43.13/BlackBox/distribution/api/app/registration_disp.php";
+
         frameLayout = findViewById(R.id.frame_dashboard);
         layout_disconnected = findViewById(R.id.layout_disconnected);
         layout_connected = findViewById(R.id.layout_connected);
@@ -64,32 +76,39 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String UserID = preferences.getString(Userkey,"");
 
-        StringRequest stringRequest=new StringRequest(Request.Method.POST,userdispurl, new Response.Listener<String>() {
+        Toast.makeText(getApplicationContext(),UserID,Toast.LENGTH_LONG).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,userdispurl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(response.trim().equals("User Not Found"))
-                {
+                try {
 
-                    Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
-                }
-                else
-                {
+                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+
+                    JSONObject jsonobject = new JSONObject(response);
+                    JSONArray jsonarray = jsonobject.getJSONArray("user");
+                    JSONObject data = jsonarray.getJSONObject(0);
+
+                    String firstName = data.getString("uname");
+                    username.setText(firstName);
+                    Toast.makeText(getApplicationContext(),firstName,Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Something went wrong",Toast.LENGTH_LONG).show();
+                error.printStackTrace();
             }
-        }){
+        }) {
             @Override
-            protected Map<String, String> getParams()  {
-                Map<String,String>parms=new HashMap<String, String>();
-                parms.put("uid", UserID);
-                return parms;
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parameters = new HashMap<String, String>();
+                parameters.put("uid",UserID);
+                return parameters;
             }
         };
-        RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
 
         if(ConnectionManager.checkConnection(getBaseContext())){
@@ -144,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, services.class));
             }
         });
-
 
     }
 }

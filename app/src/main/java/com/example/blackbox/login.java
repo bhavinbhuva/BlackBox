@@ -52,8 +52,7 @@ public class login<global> extends AppCompatActivity {
         txt_pass = findViewById(R.id.edtlogin_pass);
         btnsingup = findViewById(R.id.btnsignup);
         btnsignin = findViewById(R.id.btnsingin);
-        loginurl = "http://192.168.43.122/BlackBox/api/userlogin.php";
-        dispurl = "http://192.168.43.122/BlackBox/api/registration_disp.php";
+        loginurl = "http://192.168.43.13/blackbox/distribution/api/app/userlogin.php";
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -77,10 +76,14 @@ public class login<global> extends AppCompatActivity {
                     return;
                 }
 
+                requestQueue= Volley.newRequestQueue(getApplicationContext());
+
                 StringRequest stringRequest=new StringRequest(Request.Method.POST, loginurl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.trim().equals("User Not Found"))
+                        Toast.makeText(login.this,response,Toast.LENGTH_LONG).show();
+
+                        if(response.equals("User Not Found"))
                         {
 
                             Toast.makeText(login.this,response,Toast.LENGTH_LONG).show();
@@ -113,10 +116,8 @@ public class login<global> extends AppCompatActivity {
                         return parms;
                     }
                 };
-                RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
                 requestQueue.add(stringRequest);
             }
-
         });
         btnsingup.setOnClickListener(new View.OnClickListener() {
             @Override

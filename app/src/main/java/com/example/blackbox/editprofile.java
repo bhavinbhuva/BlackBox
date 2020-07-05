@@ -12,23 +12,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.example.blackbox.login.MyPREFERENCES;
 import static com.example.blackbox.login.Userkey;
 
 public class editprofile extends AppCompatActivity {
 
-    String nm,mobno,pnno,adhrno,eml,pass;
+    String nm,mobno,panno,adhrno,eml,pass,userdispurl;
     EditText edtnm,edtmobno,edtpanno,edtadharno,edteml,edtpass;
     RequestQueue requestQueue;
     Button btneditprofile,btnlogout;
@@ -51,7 +56,10 @@ public class editprofile extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
-        String dispurl = "http://192.168.43.122/webappdb/disp.php";
+        SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        final String UserID = preferences.getString(Userkey,"");
+
+        userdispurl = "http://192.168.43.13/BlackBox/distribution/api/app/registration_disp.php";
 
         btnlogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,35 +76,50 @@ public class editprofile extends AppCompatActivity {
             }
         });
 
-        /*JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                dispurl,null, new Response.Listener<JSONObject>() {    @Override
-        public void onResponse(JSONObject response) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,userdispurl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
 
-            Toast.makeText(getApplicationContext(),"before try",Toast.LENGTH_LONG).show();
-            try {
+             
+                    JSONObject jsonobject = new JSONObject(response);
+                    JSONArray jsonarray = jsonobject.getJSONArray("user");
+                    JSONObject data = jsonarray.getJSONObject(0);
 
-                Toast.makeText(getApplicationContext(),"try click",Toast.LENGTH_LONG).show();
-                JSONArray students = response.getJSONArray("user_info");
-                for (int i = 0 ; i < students.length();i++)
-                {
-                    JSONObject student = new JSONObject(String.valueOf(i));
-                    String nm = student.getString("name");
-                    String unm = student.getString("user_name");
-                    String upass = student.getString("user_pass");
-                    edtnm.append(nm);
+                    nm = data.getString("uname");
+                    mobno = data.getString("umobno");
+                    panno = data.getString("upanno");
+                    adhrno = data.getString("uadharno");
+                    eml = data.getString("uemail");
+                    pass = data.getString("upass");
+
+                    edtnm.setText(nm);
+                    edtmobno.setText(mobno);
+                    edtpanno.setText(panno);
+                    edtadharno.setText(adhrno);
+                    edteml.setText(eml);
+                    edtpass.setText(pass);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(editprofile.this, "Something went wrong",Toast.LENGTH_LONG).show();
                 error.printStackTrace();
             }
-        });
-        requestQueue.add(jsonObjectRequest);
-*/
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parameters = new HashMap<String, String>();
+                parameters.put("uid",UserID);
+                return parameters;
+            }
+        };
+        requestQueue.add(stringRequest);
+
     }
 
 }
