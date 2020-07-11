@@ -20,7 +20,7 @@ public class aboutus extends AppCompatActivity {
 
         webView_aboutus = findViewById(R.id.web_aboutus);
         webView_aboutus.getSettings().setJavaScriptEnabled(true);
-        webView_aboutus.loadUrl("http://192.168.43.13/blackbox/distribution/api/app/aboutus.html");
+        webView_aboutus.loadUrl("http://192.168.0.118:90/final_blackbox/blackbox/distribution/aboutus.html");
 
     }
 }

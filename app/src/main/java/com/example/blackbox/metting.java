@@ -63,7 +63,7 @@ public class metting extends AppCompatActivity implements DatePickerDialog.OnDat
         send_query = findViewById(R.id.btn_place_req);
         send_history = findViewById(R.id.btn_history);
 
-        meeting_insurl = "http://192.168.43.13/BlackBox/distribution/api/app/metting_insert.php";
+        meeting_insurl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/metting_insert.php";
 
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String UserID = preferences.getString(Userkey,"");
@@ -133,14 +133,7 @@ public class metting extends AppCompatActivity implements DatePickerDialog.OnDat
                     query.setError("Query is Required");
                     return;
                 }
-                if (TextUtils.isEmpty(tdate)) {
-                    sel_date.setError("Date Selection is Required");
-                    return;
-                }
-                if (TextUtils.isEmpty(ttime)) {
-                    sel_time.setError("Time Selection is Required");
-                    return;
-                }
+
                 StringRequest request = new StringRequest(Request.Method.POST, meeting_insurl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

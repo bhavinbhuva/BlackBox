@@ -23,6 +23,6 @@ public class services extends AppCompatActivity {
 
         webView_services = findViewById(R.id.web_services);
         webView_services.getSettings().setJavaScriptEnabled(true);
-        webView_services.loadUrl("http://192.168.43.13/blackbox/distribution/api/app/services.html");
+        webView_services.loadUrl("http://192.168.0.118:90/final_blackbox/blackbox/distribution/api/app/services.html");
     }
 }

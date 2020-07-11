@@ -31,10 +31,11 @@ public class login<global> extends AppCompatActivity {
 
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static final String Userkey= "UserKey";
+    public static final String Useremail= "UserEmail";
 
     EditText txt_mobno, txt_pass;
     Button btnsingup, btnsignin;
-    String dispurl,loginurl,Userid = "";
+    String dispurl,loginurl,Userid = "",userem = "";
     RequestQueue requestQueue;
     SharedPreferences sharedpreferences;
 
@@ -47,12 +48,13 @@ public class login<global> extends AppCompatActivity {
         if(preferences.contains(Userkey))
         {
             startActivity(new Intent(login.this, MainActivity.class));
+            finish();
         }
         txt_mobno = findViewById(R.id.edtlogin_email);
         txt_pass = findViewById(R.id.edtlogin_pass);
         btnsingup = findViewById(R.id.btnsignup);
         btnsignin = findViewById(R.id.btnsingin);
-        loginurl = "http://192.168.43.13/blackbox/distribution/api/app/userlogin.php";
+        loginurl = "http://192.168.0.118:90/final_blackbox/blackbox/distribution/api/app/userlogin.php";
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -85,21 +87,35 @@ public class login<global> extends AppCompatActivity {
 
                         if(response.equals("User Not Found"))
                         {
-
                             Toast.makeText(login.this,response,Toast.LENGTH_LONG).show();
                         }
                         else
                         {
-                            sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-                            Userid = response;
+                            try
+                            {
+                                sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                                JSONObject jsonobject = new JSONObject(response);
+                                JSONArray jsonarray = jsonobject.getJSONArray("data");
+                                JSONObject data = jsonarray.getJSONObject(0);
+                                Userid = data.getString("uid");
+                                userem = data.getString("uemail");
+                                //Userid = response;
+
+                            }
+                            catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString(Userkey, Userid);
+                            editor.putString(Useremail, userem);
                             editor.commit();
                             Toast.makeText(login.this,"Login Successfully",Toast.LENGTH_LONG).show();
 
                             Intent i=new Intent(login.this,MainActivity.class);
                             i.putExtra("userid",Userid);
+                            i.putExtra("useremail",userem);
                             startActivity(i);
+                            finish();
                         }
                     }
                 }, new Response.ErrorListener() {

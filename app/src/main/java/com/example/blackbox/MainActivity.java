@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.blackbox.login.MyPREFERENCES;
+import static com.example.blackbox.login.Useremail;
 import static com.example.blackbox.login.Userkey;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,10 +52,13 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     LinearLayout layout_disconnected;
     ScrollView layout_connected;
-    TextView username;
-    String UserID, usnm,mobno,pass,userdispurl;
+    TextView username,txtCount;;
+    String UserID, usnm,mobno,pass,userdispurl,UserEMAIL,updateSeenUrl;
     private  int STORAGE_PERMISSION_CODE = 1;
     RequestQueue requestQueue;
+
+    private Handler mHandler = new Handler();
+    private Runnable mRunnable;
 
     @SuppressLint("ShowToast")
     @Override
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         username = findViewById(R.id.txtmain_name);
+        txtCount = findViewById(R.id.txtCount);
 
         chat = findViewById(R.id.menu_chatting);
         scan = findViewById(R.id.menu_scanning);
@@ -75,14 +81,26 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
-        userdispurl = "http://192.168.43.13/BlackBox/distribution/api/app/registration_disp.php";
+        userdispurl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/registration_disp.php";
+        updateSeenUrl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/updateSeen.php";
 
         frameLayout = findViewById(R.id.frame_dashboard);
         layout_disconnected = findViewById(R.id.layout_disconnected);
         layout_connected = findViewById(R.id.layout_connected);
 
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         final String UserID = preferences.getString(Userkey,"");
+        UserEMAIL = preferences.getString(Useremail,"");
+        updateSeen();
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                updateSeen();
+                mHandler.postDelayed(this,2000);
+            }
+        };
+        mRunnable.run();
 
      //   Toast.makeText(getApplicationContext(),UserID,Toast.LENGTH_LONG).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,userdispurl, new Response.Listener<String>() {
@@ -153,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, editprofile.class);
                 startActivity(i);
+                finish();
             }
         });
         aboutus.setOnClickListener(new View.OnClickListener() {
@@ -169,5 +188,54 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    public void updateSeen()
+    {
+        StringRequest request = new StringRequest(Request.Method.POST, updateSeenUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Toast.makeText(getApplicationContext(),response.toString(),Toast.LENGTH_LONG).show();
+                txtCount.setText(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("message_receiver", UserEMAIL);
+                return parameters;
+            }
+        };
+        requestQueue.add(request);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHandler.removeCallbacks(mRunnable);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                updateSeen();
+                mHandler.postDelayed(this,2000);
+            }
+        };
+        mRunnable.run();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(mRunnable);
+    }
+}
 

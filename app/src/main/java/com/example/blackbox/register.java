@@ -26,7 +26,7 @@ public class register extends AppCompatActivity {
 
     EditText input_nm,input_mobno,input_panno,input_adharno,input_email,input_pass;
     RequestQueue requestQueue;
-    String insurl = "http://192.168.43.13/blackbox/distribution/api/app/registration_insert.php";
+    String insurl = "http://192.168.0.118:90/final_blackbox/blackbox/distribution/api/app/registration_insert.php";
 
     Button btnregister;
     @Override
@@ -105,6 +105,7 @@ public class register extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"Registration Successfully",Toast.LENGTH_LONG).show();
                             Intent i = new Intent(register.this,login.class);
                             startActivity(i);
+                            finish();
                         }
                     }
                 }, new Response.ErrorListener() {

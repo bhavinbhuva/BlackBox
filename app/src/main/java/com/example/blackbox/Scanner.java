@@ -69,8 +69,8 @@ public class Scanner extends AppCompatActivity {
     private Bitmap bitmap;
     EditText Name;
 
-    private String UploadUrl = "http://192.168.43.13/BlackBox/distribution/api/app/uploadinfo.php";
-    private final String Scanning_url = "http://192.168.43.13/BlackBox/distribution/api/app/scannerdetail.php";
+    private String UploadUrl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/uploadinfo.php";
+    private final String Scanning_url = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/scannerdetail.php";
 
     RecyclerView recycler_dochistory;
     private scanneradapter adapter;
