@@ -33,9 +33,9 @@ import static com.example.blackbox.login.Userkey;
 
 public class editprofile extends AppCompatActivity {
 
-    String nm,mobno,panno,adhrno,eml,pass,userdispurl;
+    String nm,mobno,panno,adhrno,eml,pass,userdispurl,userupdateurl;
     EditText edtnm,edtmobno,edtpanno,edtadharno,edteml,edtpass;
-    RequestQueue requestQueue;
+    RequestQueue requestQueue,requestQueueupd;
     Button btneditprofile,btnlogout;
 
 
@@ -55,11 +55,15 @@ public class editprofile extends AppCompatActivity {
         btnlogout = findViewById(R.id.btnlogout);
 
         requestQueue = Volley.newRequestQueue(this);
+        requestQueueupd = Volley.newRequestQueue(this);
+
+
 
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String UserID = preferences.getString(Userkey,"");
 
         userdispurl = "http://192.168.43.13/BlackBox/distribution/api/app/registration_disp.php";
+        userupdateurl = "http://192.168.43.13/BlackBox/distribution/api/app/registration_update.php";
 
         btnlogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +85,6 @@ public class editprofile extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
 
-             
                     JSONObject jsonobject = new JSONObject(response);
                     JSONArray jsonarray = jsonobject.getJSONArray("user");
                     JSONObject data = jsonarray.getJSONObject(0);
@@ -94,13 +97,16 @@ public class editprofile extends AppCompatActivity {
                     pass = data.getString("upass");
 
                     edtnm.setText(nm);
+                    edtmobno.setEnabled(false);
                     edtmobno.setText(mobno);
                     edtpanno.setText(panno);
                     edtadharno.setText(adhrno);
+                    edteml.setEnabled(false);
                     edteml.setText(eml);
                     edtpass.setText(pass);
 
                 } catch (JSONException e) {
+
                     e.printStackTrace();
                 }
             }
@@ -120,6 +126,38 @@ public class editprofile extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
 
+        btneditprofile.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             StringRequest requestupd = new StringRequest(Request.Method.POST, userupdateurl, new Response.Listener<String>() {
+                 @Override
+                 public void onResponse(String response) {
+
+                     if(response.equals("Update Successfully"))
+                     {
+                         Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                     }
+                 }
+             }, new Response.ErrorListener() {
+                 @Override
+                 public void onErrorResponse(VolleyError error) {
+                     Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
+                 }
+             }) {
+                 @Override
+                 protected Map<String, String> getParams() throws AuthFailureError {
+                     Map<String, String> parameters = new HashMap<String, String>();
+                     parameters.put("uid",UserID);
+                     parameters.put("uname",edtnm.getText().toString());
+                     parameters.put("upanno", edtmobno.getText().toString());
+                     parameters.put("uadharno", edtpanno.getText().toString());
+                     parameters.put("upass", edtpass.getText().toString());
+                     return parameters;
+                 }
+             };
+             requestQueueupd.add(requestupd);
+         }
+     });
     }
 
 }

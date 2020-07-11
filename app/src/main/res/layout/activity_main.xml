@@ -276,7 +276,7 @@
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="44dp"
-                            android:src="@drawable/setting"
+                            android:src="@drawable/manageprofile"
                             android:layout_marginTop="12dp"
                             />
                         <TextView

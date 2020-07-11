@@ -9,4 +9,5 @@
         <item>service item 6</item>
         <item>service item 7</item>
     </string-array>
+    <string name="url_regis_ins"> http://192.168.43.13/blackbox/distribution/api/app/registration_insert.php</string>
 </resources>

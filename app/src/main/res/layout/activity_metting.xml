@@ -16,9 +16,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="50dp"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
             android:background="@drawable/layout_back"
             android:orientation="vertical"
             android:padding="10dp">
@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btn_sel_date"
                     android:layout_width="100px"
@@ -51,8 +52,8 @@
                     android:id="@+id/btn_sel_time"
                     android:layout_width="100px"
                     android:layout_height="100px"
-                    android:layout_marginTop="4dp"
                     android:layout_marginLeft="35dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/ic_clock"
                     android:fillColor="@android:color/white"
                     android:textSize="20dp" />
@@ -68,6 +69,7 @@
                     android:textColor="@color/White"
                     android:textSize="20dp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,33 +78,47 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:text="Enter Query"
                     android:textColor="@color/White"
-                    android:layout_marginTop="10dp"
-                    android:textSize="20dp"
-                    android:layout_marginLeft="10dp"
-                    />
+                    android:textSize="20dp" />
 
                 <EditText
                     android:id="@+id/edt_send_query"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/tb_back_gray"
                     android:layout_margin="10dp"
+                    android:background="@drawable/tb_back_gray"
+                    android:hint="Type Your Query Here"
                     android:paddingBottom="10dp"
                     android:textColor="@color/White"
-                    android:textColorHint="@color/White"
-                    android:hint="Type Your Query Here"
-                    />
+                    android:textColorHint="@color/White" />
 
                 <Button
                     android:id="@+id/btn_place_req"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Place Request"
-                    android:textColor="@color/White"
                     android:background="@drawable/ic_sign_in"
+                    android:text="Place Request"
+                    android:textColor="@color/White" />
+
+                <Button
+                    android:id="@+id/btn_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/ic_sign_in"
+                    android:text="View History"
+                    android:textColor="@color/White" />
+                <TextView
+                    android:id="@+id/txt_reply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:text=""
+                    android:textColor="@color/White"
                     />
 
             </LinearLayout>

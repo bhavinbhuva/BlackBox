@@ -2,11 +2,19 @@ package com.example.blackbox;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Instrumentation;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -44,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     ScrollView layout_connected;
     TextView username;
     String UserID, usnm,mobno,pass,userdispurl;
-
+    private  int STORAGE_PERMISSION_CODE = 1;
     RequestQueue requestQueue;
 
     @SuppressLint("ShowToast")
@@ -76,21 +84,17 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String UserID = preferences.getString(Userkey,"");
 
-        Toast.makeText(getApplicationContext(),UserID,Toast.LENGTH_LONG).show();
+     //   Toast.makeText(getApplicationContext(),UserID,Toast.LENGTH_LONG).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,userdispurl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-
-                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
-
                     JSONObject jsonobject = new JSONObject(response);
                     JSONArray jsonarray = jsonobject.getJSONArray("user");
                     JSONObject data = jsonarray.getJSONObject(0);
 
                     String firstName = data.getString("uname");
                     username.setText(firstName);
-                    Toast.makeText(getApplicationContext(),firstName,Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -124,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             scan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-               //     startActivity(new Intent(MainActivity.this, Scan.class));
+                    startActivity(new Intent(MainActivity.this, Scanner.class));
                 }
             });
             payment.setOnClickListener(new View.OnClickListener() {
@@ -165,4 +169,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-}
+    }
+
