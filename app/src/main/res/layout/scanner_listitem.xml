@@ -15,8 +15,9 @@
         android:text="You have No Document history"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="100dp"
+        android:fontFamily="@font/calibri_bold"
         android:layout_marginRight="100dp"
-        android:visibility="gone"></TextView>
+        android:visibility="gone"/>
 
     <androidx.cardview.widget.CardView
         android:layout_margin="16dp"
@@ -36,7 +37,8 @@
                     android:textSize="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date"></TextView>
+                    android:fontFamily="@font/calibri_regular"
+                    android:text="Date"/>
 
                 <TextView
                     android:id="@+id/tvdb_docname"
@@ -44,7 +46,8 @@
                     android:textSize="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="dbquery"></TextView>
+                    android:fontFamily="@font/calibri_bold"
+                    android:text="dbquery"/>
 
             </LinearLayout>
     </androidx.cardview.widget.CardView>

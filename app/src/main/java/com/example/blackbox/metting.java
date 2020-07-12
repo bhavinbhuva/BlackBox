@@ -63,7 +63,7 @@ public class metting extends AppCompatActivity implements DatePickerDialog.OnDat
         send_query = findViewById(R.id.btn_place_req);
         send_history = findViewById(R.id.btn_history);
 
-        meeting_insurl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/metting_insert.php";
+        meeting_insurl = "https://blackbox2.000webhostapp.com/api/app/metting_insert.php";
 
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String UserID = preferences.getString(Userkey,"");
@@ -126,14 +126,21 @@ public class metting extends AppCompatActivity implements DatePickerDialog.OnDat
 
 
                 qvery = query.getText().toString().trim();
-                tdate = sel_date.getText().toString().trim();
-                ttime = sel_time.getText().toString().trim();
+                tdate = dispdate.getText().toString().trim();
+                ttime = disptime.getText().toString().trim();
 
                 if (TextUtils.isEmpty(qvery)) {
                     query.setError("Query is Required");
                     return;
                 }
-
+                if (tdate.equals("Date")) {
+                    sel_date.setError("Date Selection is Required");
+                    return;
+                }
+                if (ttime.equals("Time")) {
+                    sel_time.setError("Time Selection is Required");
+                    return;
+                }
                 StringRequest request = new StringRequest(Request.Method.POST, meeting_insurl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -143,7 +150,7 @@ public class metting extends AppCompatActivity implements DatePickerDialog.OnDat
                         }
                         else
                         {
-                            Toast.makeText(getApplicationContext(),"Metting Request Not Send Try Again..",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"Metting Request Not Send Try Again.."+response,Toast.LENGTH_LONG).show();
                         }
 
                     }

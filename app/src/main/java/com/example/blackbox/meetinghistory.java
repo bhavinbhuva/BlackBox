@@ -33,7 +33,7 @@ import static com.example.blackbox.login.Userkey;
 
 public class meetinghistory extends AppCompatActivity {
 
-    private static final String metting_url = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/mettingdetail.php";
+    private static final String metting_url = "https://blackbox2.000webhostapp.com/api/app/mettingdetail.php";
     RecyclerView recyclerView;
     TextView tv_nonehis;
     private myadapte adapter;

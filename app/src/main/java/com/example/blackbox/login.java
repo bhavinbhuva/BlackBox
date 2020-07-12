@@ -54,7 +54,7 @@ public class login<global> extends AppCompatActivity {
         txt_pass = findViewById(R.id.edtlogin_pass);
         btnsingup = findViewById(R.id.btnsignup);
         btnsignin = findViewById(R.id.btnsingin);
-        loginurl = "http://192.168.0.118:90/final_blackbox/blackbox/distribution/api/app/userlogin.php";
+        loginurl = "https://blackbox2.000webhostapp.com/api/app/userlogin.php";
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -143,4 +143,3 @@ public class login<global> extends AppCompatActivity {
         });
     }
 }
-

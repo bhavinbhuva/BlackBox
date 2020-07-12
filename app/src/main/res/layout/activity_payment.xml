@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
+        android:fontFamily="@font/calibri_bold"
         android:text="This Feature Is Not Available Right Now"
         android:textColor="@color/White" />
 

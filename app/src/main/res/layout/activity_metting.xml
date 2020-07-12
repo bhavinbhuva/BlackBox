@@ -45,6 +45,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="Date"
+                    android:fontFamily="@font/calibri_regular"
                     android:textColor="@color/White"
                     android:textSize="20dp" />
 
@@ -66,6 +67,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="Time"
+                    android:fontFamily="@font/calibri_regular"
                     android:textColor="@color/White"
                     android:textSize="20dp" />
             </LinearLayout>
@@ -81,6 +83,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:text="Enter Query"
+                    android:fontFamily="@font/calibri_bold"
                     android:textColor="@color/White"
                     android:textSize="20dp" />
 
@@ -91,9 +94,10 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/tb_back_gray"
                     android:hint="Type Your Query Here"
+                    android:fontFamily="@font/calibri_regular"
                     android:paddingBottom="10dp"
                     android:textColor="@color/White"
-                    android:textColorHint="@color/White" />
+                    android:textColorHint="@color/hint_backcolor" />
 
                 <Button
                     android:id="@+id/btn_place_req"
@@ -102,6 +106,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/ic_sign_in"
                     android:text="Place Request"
+                    android:fontFamily="@font/calibri_bold"
                     android:textColor="@color/White" />
 
                 <Button
@@ -111,6 +116,7 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/ic_sign_in"
                     android:text="View History"
+                    android:fontFamily="@font/calibri_bold"
                     android:textColor="@color/White" />
                 <TextView
                     android:id="@+id/txt_reply"

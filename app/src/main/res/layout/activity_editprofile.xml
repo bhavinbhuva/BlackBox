@@ -20,6 +20,7 @@
             android:textColor="@color/White"
             android:gravity="center"
             android:textSize="35dp"
+            android:fontFamily="@font/calibri_bold"
             android:layout_margin="35dp"/>
 
         <TextView

@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.blackbox.login.MyPREFERENCES;
-import static com.example.blackbox.login.Useremail;
 import static com.example.blackbox.login.Userkey;
 
 public class editprofile extends AppCompatActivity {
@@ -63,8 +62,8 @@ public class editprofile extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String UserID = preferences.getString(Userkey,"");
 
-        userdispurl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/registration_disp.php";
-        userupdateurl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/registration_update.php";
+        userdispurl = "https://blackbox2.000webhostapp.com/api/app/registration_disp.php";
+        userupdateurl = "https://blackbox2.000webhostapp.com/api/app/registration_update.php";
 
         btnlogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +71,6 @@ public class editprofile extends AppCompatActivity {
                 SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.remove(Userkey);
-                editor.remove(Useremail);
                 editor.commit();
 
                 finish();
@@ -162,10 +160,4 @@ public class editprofile extends AppCompatActivity {
      });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(editprofile.this,MainActivity.class));
-        finish();
-    }
 }

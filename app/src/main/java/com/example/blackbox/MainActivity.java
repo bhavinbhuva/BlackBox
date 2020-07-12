@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -43,7 +42,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.blackbox.login.MyPREFERENCES;
-import static com.example.blackbox.login.Useremail;
 import static com.example.blackbox.login.Userkey;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,13 +50,12 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     LinearLayout layout_disconnected;
     ScrollView layout_connected;
-    TextView username,txtCount;;
-    String UserID, usnm,mobno,pass,userdispurl,UserEMAIL,updateSeenUrl;
-    private  int STORAGE_PERMISSION_CODE = 1;
+    TextView username;
+    String UserID, usnm,mobno,pass,userdispurl;
     RequestQueue requestQueue;
 
-    private Handler mHandler = new Handler();
-    private Runnable mRunnable;
+
+    private static final int STORAGE_PERMISSION_CODE = 101;
 
     @SuppressLint("ShowToast")
     @Override
@@ -66,10 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         username = findViewById(R.id.txtmain_name);
-        txtCount = findViewById(R.id.txtCount);
-
         chat = findViewById(R.id.menu_chatting);
         scan = findViewById(R.id.menu_scanning);
         ledger = findViewById(R.id.menu_ledger);
@@ -79,30 +73,23 @@ public class MainActivity extends AppCompatActivity {
         aboutus = findViewById(R.id.menu_aboutus);
         services= findViewById(R.id.menu_services);
 
-        requestQueue = Volley.newRequestQueue(this);
+        //check permission
+        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,STORAGE_PERMISSION_CODE);
 
-        userdispurl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/registration_disp.php";
-        updateSeenUrl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/updateSeen.php";
+
+
+        requestQueue = Volley.newRequestQueue(this);
+        userdispurl = "https://blackbox2.000webhostapp.com/api/app/registration_disp.php";
+        //userdispurl = getString(R.string.url_regis_disp);
 
         frameLayout = findViewById(R.id.frame_dashboard);
         layout_disconnected = findViewById(R.id.layout_disconnected);
         layout_connected = findViewById(R.id.layout_connected);
 
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
         final String UserID = preferences.getString(Userkey,"");
-        UserEMAIL = preferences.getString(Useremail,"");
-        updateSeen();
-        mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                updateSeen();
-                mHandler.postDelayed(this,2000);
-            }
-        };
-        mRunnable.run();
 
-     //   Toast.makeText(getApplicationContext(),UserID,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),,Toast.LENGTH_LONG).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,userdispurl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -112,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject data = jsonarray.getJSONObject(0);
 
                     String firstName = data.getString("uname");
+                    //Toast.makeText(MainActivity.this, firstName,Toast.LENGTH_LONG).show();
                     username.setText(firstName);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -120,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, "Something went wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Something went wrong"+error.toString(),Toast.LENGTH_LONG).show();
                 error.printStackTrace();
             }
         }) {
@@ -161,6 +149,12 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, metting.class));
                 }
             });
+            ledger.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, ledger.class));
+                }
+            });
         }
         else
         {
@@ -171,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, editprofile.class);
                 startActivity(i);
-                finish();
             }
         });
         aboutus.setOnClickListener(new View.OnClickListener() {
@@ -189,53 +182,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void updateSeen()
+
+    public void checkPermission(String permission, int requestCode)
     {
-        StringRequest request = new StringRequest(Request.Method.POST, updateSeenUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Toast.makeText(getApplicationContext(),response.toString(),Toast.LENGTH_LONG).show();
-                txtCount.setText(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("message_receiver", UserEMAIL);
-                return parameters;
-            }
-        };
-        requestQueue.add(request);
-    }
+        if (ContextCompat.checkSelfPermission(MainActivity.this, permission)
+                == PackageManager.PERMISSION_DENIED) {
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mHandler.removeCallbacks(mRunnable);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                updateSeen();
-                mHandler.postDelayed(this,2000);
-            }
-        };
-        mRunnable.run();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mHandler.removeCallbacks(mRunnable);
+            // Requesting the permission
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[] { permission },
+                    requestCode);
+        }
     }
 }
 

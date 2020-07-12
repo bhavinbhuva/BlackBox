@@ -28,7 +28,7 @@ public class chatting extends AppCompatActivity {
     WebView webView_services;
     String UserEMAIL;
     RequestQueue requestQueue;
-    String updateUrl = "http://192.168.0.118:90/final_blackbox/blackbox/distribution/updateSeenApp.php";
+    String updateUrl = "https://blackbox2.000webhostapp.com/updateSeenApp.php";
     private Handler mHandler = new Handler();
     private Runnable mRunnable;
     @Override
@@ -39,13 +39,13 @@ public class chatting extends AppCompatActivity {
         getSupportActionBar().setTitle("Chat With Admin");
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         UserEMAIL = preferences.getString(Useremail,"");
-        Toast.makeText(getApplicationContext(),UserEMAIL,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),UserEMAIL,Toast.LENGTH_SHORT).show();
         requestQueue = Volley.newRequestQueue(this);
         updateStatus();
 
         webView_services = findViewById(R.id.web_chat);
         webView_services.getSettings().setJavaScriptEnabled(true);
-        webView_services.loadUrl("http://192.168.0.118:90/final_blackbox/blackbox/distribution/chatDisplayApp.php?email="+UserEMAIL);
+        webView_services.loadUrl("https://blackbox2.000webhostapp.com/chatDisplayApp.php?email="+UserEMAIL);
 
         mRunnable = new Runnable() {
             @Override

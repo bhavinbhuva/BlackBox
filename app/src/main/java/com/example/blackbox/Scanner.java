@@ -69,8 +69,10 @@ public class Scanner extends AppCompatActivity {
     private Bitmap bitmap;
     EditText Name;
 
-    private String UploadUrl = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/uploadinfo.php";
-    private final String Scanning_url = "http://192.168.0.118:90/final_blackbox/BlackBox/distribution/api/app/scannerdetail.php";
+    private static final int CAMERA_PERMISSION_CODE = 100;
+
+    private final  String UploadUrl = "https://blackbox2.000webhostapp.com/api/app/uploadinfo.php";
+    private final String Scanning_url = "https://blackbox2.000webhostapp.com/api/app/scannerdetail.php";
 
     RecyclerView recycler_dochistory;
     private scanneradapter adapter;
@@ -80,6 +82,8 @@ public class Scanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
+
+        checkPermission(Manifest.permission.CAMERA,CAMERA_PERMISSION_CODE);
 
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         UserID = preferences.getString(Userkey,"");
@@ -288,5 +292,17 @@ public class Scanner extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
         byte[] imgBytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imgBytes,Base64.DEFAULT);
+    }
+
+    public void checkPermission(String permission, int requestCode)
+    {
+        if (ContextCompat.checkSelfPermission(Scanner.this, permission)
+                == PackageManager.PERMISSION_DENIED) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(Scanner.this,
+                    new String[] { permission },
+                    requestCode);
+        }
     }
 }
